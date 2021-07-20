@@ -1,15 +1,23 @@
 import "./topbar.css"
 import { Link } from "react-router-dom"
+import { Context } from "../../context/Context";
+import { useContext } from "react"
 
 const Topbar = () => {
-    const user = false;
+    const {user, dispatch} = useContext(Context);
+    const PF = "http://localhost:8000/images/";
+
+    const handleLogout = () => {
+        dispatch({type: "LOGOUT"})
+    }
+
     return (
         <div className="topbar">
             <div className="topbar-right">
-                <i class="top-icon fab fa-facebook-square"></i>
-                <i class="top-icon fab fa-instagram-square"></i>
-                <i class="top-icon fab fa-telegram"></i>
-                <i class="top-icon fab fa-twitter-square"></i>
+                <i className="top-icon fab fa-facebook-square"></i>
+                <i className="top-icon fab fa-instagram-square"></i>
+                <i className="top-icon fab fa-telegram"></i>
+                <i className="top-icon fab fa-twitter-square"></i>
             </div>
             <div className="topbar-center">
                 <ul className="top-center-list">
@@ -25,16 +33,18 @@ const Topbar = () => {
                     <li className="top-center-item">
                         <Link to="/write">Write</Link>
                     </li >
-                    <li className="top-center-item">
-                        <Link to="/login">{user && "Log out"}</Link>
+                    <li className="top-center-item" onClick={handleLogout}>
+                        {user && "Log out"}
                     </li >
                 </ul>
             </div>
             <div className="topbar-left">
                 {user ? (
-                    <img 
-                    src="https://images.unsplash.com/photo-1454372182658-c712e4c5a1db?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80" alt="" 
-                    className="top-right-img" />
+                    <Link to="/setting">
+                        <img 
+                        src={user.profilePicture ? PF + user.profilePicture : PF+"noAvatar.png"} alt="" 
+                        className="top-right-img" />
+                    </Link>
                 ) : (
                     <>
                         <ul className="top-list">
@@ -48,7 +58,7 @@ const Topbar = () => {
                     </>
                 )}
                 
-                <i class="search-icon fas fa-search"></i>
+                <i className="search-icon fas fa-search"></i>
             </div>
         </div>
     )

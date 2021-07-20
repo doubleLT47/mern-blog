@@ -2,15 +2,12 @@ import "./post.css";
 
 import PostItem from "../postItem/PostItem";
 
-const Post = () => {
+const Post = ({posts}) => {
     return (
         <div className="post">
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
+            {posts.map(post => (
+                <PostItem key={post._id} post={post}/>
+            ))}
         </div>
     )
 }

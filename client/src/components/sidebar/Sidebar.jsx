@@ -1,6 +1,21 @@
 import "./sidebar.css"
+import { useState, useEffect } from "react"
+import axios from "axios"
+import { Link } from "react-router-dom"
 
 const Sidebar = () => {
+    const [category, setCategory] = useState([]);
+
+    useEffect(() => {
+        const fetchCategory = async () => {
+            const res = await axios.get("/category");
+
+            setCategory(res.data)
+        }
+
+        fetchCategory(); 
+    }, [])
+
     return (
         <div className="sidebar">
             <div className="sidebar-item">
@@ -14,20 +29,20 @@ const Sidebar = () => {
             <div className="sidebar-item">
                 <span className="sidebar-title">Categories</span>
                 <ul className="sidebar-list">
-                    <li className="sidebar-list--item">Life</li>
-                    <li className="sidebar-list--item">Music</li>
-                    <li className="sidebar-list--item">Style</li>
-                    <li className="sidebar-list--item">Tech</li>
-                    <li className="sidebar-list--item">Movies</li>
+                    {category.map(cat => (
+                        <Link key={cat._id} to={`/?cat=${cat.name}`}>
+                            <li className="sidebar-list--item">{cat.name}</li>
+                        </Link>
+                    ))}
                 </ul>
             </div>
             <div className="sidebar-item">
                 <span className="sidebar-title">Follow me</span>
                 <div className="sidebar-social">
-                    <i class="sidebar-icon fab fa-facebook-square"></i>
-                    <i class="sidebar-icon fab fa-instagram-square"></i>
-                    <i class="sidebar-icon fab fa-telegram"></i>
-                    <i class="sidebar-icon fab fa-twitter-square"></i>
+                    <i className="sidebar-icon fab fa-facebook-square"></i>
+                    <i className="sidebar-icon fab fa-instagram-square"></i>
+                    <i className="sidebar-icon fab fa-telegram"></i>
+                    <i className="sidebar-icon fab fa-twitter-square"></i>
                 </div>
             </div>
         </div>
